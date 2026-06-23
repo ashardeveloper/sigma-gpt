@@ -23,6 +23,8 @@ function ChatWindow() {
     setCurrThreadId,
     setAllThreads,
     setIsTypingReply,
+    isGuest,
+    setIsGuest,
   } = useContext(MyContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -32,19 +34,32 @@ function ChatWindow() {
     if (!prompt.trim()) return;
     setIsLoading(true);
     setNewChat(false);
+    const endpoint = isGuest
+      ? "http://localhost:8080/api/chat/guest"
+      : "http://localhost:8080/api/chat";
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+
+        ...(isGuest
+          ? {}
+          : {
+              Authorization: `Bearer ${token}`,
+            }),
       },
       body: JSON.stringify({
         message: prompt,
-        threadId: currThreadId,
+
+        ...(isGuest
+          ? {}
+          : {
+              threadId: currThreadId,
+            }),
       }),
     };
     try {
-      const response = await fetch("http://localhost:8080/api/chat", options);
+      const response = await fetch(endpoint, options);
       const data = await response.json();
 
       setIsTypingReply(true);
@@ -73,6 +88,7 @@ function ChatWindow() {
     setUser(null);
 
     setIsAuthenticated(false);
+    setIsGuest(false);
     setAllThreads([]);
 
     setPrevChats([]);
@@ -114,6 +130,21 @@ function ChatWindow() {
           </span>
         </div>
       </div>
+      {isGuest && (
+        <div className={styles.guestBanner}>
+          <span>👋 Guest Mode</span>
+
+          <button
+            className={styles.loginNowBtn}
+            onClick={() => {
+              setIsGuest(false);
+              navigate("/login");
+            }}
+          >
+            Login to save chats
+          </button>
+        </div>
+      )}
       {isOpen && (
         <div className={styles.dropDown}>
           <div className={styles.dropDownItem}>

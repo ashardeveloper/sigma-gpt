@@ -15,6 +15,7 @@ function Auth({ mode }) {
     setPrompt,
     setNewChat,
     setCurrThreadId,
+    setIsGuest,
   } = useContext(MyContext);
   const navigate = useNavigate();
 
@@ -76,7 +77,6 @@ function Auth({ mode }) {
 
         return;
       }
-      console.log("After Login", data);
 
       // Login success
 
@@ -97,6 +97,14 @@ function Auth({ mode }) {
       console.error(error);
       alert("Something went wrong");
     }
+  };
+
+  const continueAsGuest = () => {
+    setIsGuest(true);
+
+    setIsAuthenticated(true);
+
+    navigate("/chat");
   };
 
   return (
@@ -137,6 +145,10 @@ function Auth({ mode }) {
 
         <button className={styles.submitBtn} onClick={handleSubmit}>
           {isLogin ? "Login" : "Sign Up"}
+        </button>
+
+        <button className={styles.guestBtn} onClick={continueAsGuest}>
+          Continue as Guest →
         </button>
 
         <p className={styles.switchText}>

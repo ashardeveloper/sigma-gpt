@@ -6,19 +6,28 @@ import { v1 as uuidv1 } from "uuid";
 
 const router = express.Router();
 
-// Create a new thread
-router.post("/test", async (req, res) => {
-  try {
-    const thread = new Thread({
-      threadId: "abc",
-      title: "Thread no 2",
+// Join as Guest
+router.post("/chat/guest", async (req, res) => {
+  const { message } = req.body;
+
+  if (!message) {
+    return res.status(400).json({
+      error: "Message is required",
     });
-    const response = await thread.save();
-    console.log(thread);
-    res.send(response);
+  }
+
+  try {
+    const aiResponse = await getOpenAIResponse(message);
+
+    res.json({
+      reply: aiResponse,
+    });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Failed to save in DB" });
+
+    res.status(500).json({
+      error: "Failed to get response",
+    });
   }
 });
 

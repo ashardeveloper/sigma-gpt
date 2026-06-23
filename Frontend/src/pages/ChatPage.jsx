@@ -8,10 +8,17 @@ import ChatWindow from "../components/ChatWindow";
 function ChatPage() {
   const { threadId } = useParams();
 
-  const { token, setCurrThreadId, setPrevChats, setNewChat, setReply } =
-    useContext(MyContext);
+  const {
+    token,
+    setCurrThreadId,
+    setPrevChats,
+    setNewChat,
+    setReply,
+    isGuest,
+  } = useContext(MyContext);
 
   useEffect(() => {
+    if (isGuest) return;
     const loadThread = async () => {
       if (!threadId) {
         setCurrThreadId(null);
@@ -47,8 +54,11 @@ function ChatPage() {
 
   return (
     <>
-      <Sidebar />
-      <ChatWindow />
+      <>
+        {!isGuest && <Sidebar />}
+
+        <ChatWindow />
+      </>
     </>
   );
 }

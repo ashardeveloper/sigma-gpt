@@ -23,6 +23,7 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   const [user, setUser] = useState(null);
+  const [isGuest, setIsGuest] = useState(false);
 
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token"),
@@ -49,6 +50,8 @@ function App() {
     setAllThreads,
     isTypingReply,
     setIsTypingReply,
+    isGuest,
+    setIsGuest,
   };
 
   useEffect(() => {
