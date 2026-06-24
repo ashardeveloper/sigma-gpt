@@ -76,7 +76,7 @@ function Chat() {
 
   return (
     <>
-      {newChat && <h1>Start a new chat</h1>}
+      {newChat && <h1 className={styles.newChatTitle}>Start a new chat</h1>}
       <div className={styles.chats}>
         {prevChats?.slice(0, -1).map((chat, idx) => (
           <div
@@ -107,7 +107,7 @@ function Chat() {
                 </ReactMarkdown>
               </div>
             ) : (
-              <div className="gptDiv" key={"typing"}>
+              <div className={styles.gptDiv} key={"typing"}>
                 <ReactMarkdown
                   rehypePlugins={[rehypeHighlight]}
                   components={markdownComponents}

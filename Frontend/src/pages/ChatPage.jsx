@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MyContext } from "../MyContext";
 
@@ -7,6 +7,7 @@ import ChatWindow from "../components/ChatWindow";
 
 function ChatPage() {
   const { threadId } = useParams();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const {
     token,
@@ -53,13 +54,27 @@ function ChatPage() {
   }, [threadId]);
 
   return (
-    <>
-      <>
-        {!isGuest && <Sidebar />}
+    <div className="chatLayout">
+      {!isGuest && (
+        <>
+          <button
+            className={`sidebarOverlay ${isSidebarOpen ? "show" : ""}`}
+            aria-label="Close sidebar"
+            onClick={() => setIsSidebarOpen(false)}
+          />
 
-        <ChatWindow />
-      </>
-    </>
+          <Sidebar
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+          />
+        </>
+      )}
+
+      <ChatWindow
+        showMenuButton={!isGuest}
+        onMenuClick={() => setIsSidebarOpen(true)}
+      />
+    </div>
   );
 }
 

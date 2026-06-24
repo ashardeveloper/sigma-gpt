@@ -6,7 +6,7 @@ import { ScaleLoader } from "react-spinners";
 import { v1 as uuidv1 } from "uuid";
 import { useNavigate } from "react-router-dom";
 
-function ChatWindow() {
+function ChatWindow({ showMenuButton = false, onMenuClick }) {
   const {
     prompt,
     setPrompt,
@@ -121,9 +121,22 @@ function ChatWindow() {
   return (
     <div className={styles.chatWindow}>
       <div className={styles.navbar}>
-        <span>
-          SigmaGPT <i className="fa-solid fa-chevron-down"></i>
-        </span>
+        <div className={styles.brandGroup}>
+          {showMenuButton && (
+            <button
+              className={styles.menuBtn}
+              aria-label="Open sidebar"
+              onClick={onMenuClick}
+            >
+              <i className="fa-solid fa-bars"></i>
+            </button>
+          )}
+
+          <span>
+            SigmaGPT <i className="fa-solid fa-chevron-down"></i>
+          </span>
+        </div>
+
         <div className={styles.userIconDiv} onClick={handleProfileClick}>
           <span className={styles.userIcon}>
             <i className="fa-solid fa-user"></i>

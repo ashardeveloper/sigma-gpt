@@ -2,6 +2,7 @@
   flex: 1;
   width: 100%;
   max-width: 700px;
+  min-height: 0;
 
   overflow-y: auto;
 
@@ -17,6 +18,13 @@
 .gptDiv {
   text-align: left;
   font-size: 0.9rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.newChatTitle {
+  margin: 0;
+  padding: 0 1rem;
 }
 
 .userMessage {
@@ -26,6 +34,8 @@
   margin-left: 15rem;
   max-width: 500px;
   width: fit-content;
+  overflow-wrap: anywhere;
+  text-align: left;
 }
 
 pre code.hljs {
@@ -34,6 +44,9 @@ pre code.hljs {
 
 pre {
   border-radius: 14px !important;
+  max-width: 100%;
+  overflow-x: auto;
+  text-align: left;
 }
 
 .chats::-webkit-scrollbar {
@@ -51,4 +64,31 @@ pre {
 
 .chats::-webkit-scrollbar-thumb:hover {
   background: #666;
+}
+
+@media (max-width: 768px) {
+  .chats {
+    max-width: none;
+    padding: 1rem;
+  }
+
+  .newChatTitle {
+    font-size: 1.6rem;
+  }
+
+  .userMessage {
+    max-width: 88%;
+    margin-left: 0;
+    padding: 10px 14px;
+  }
+
+  .userDiv,
+  .gptDiv {
+    font-size: 0.95rem;
+  }
+
+  .gptDiv p,
+  .gptDiv li {
+    line-height: 1.5;
+  }
 }

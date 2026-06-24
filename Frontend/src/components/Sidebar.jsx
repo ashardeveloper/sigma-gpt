@@ -5,7 +5,7 @@ import { MyContext } from "../MyContext.jsx";
 import { v1 as uuidv1 } from "uuid";
 import { useNavigate } from "react-router-dom";
 
-function Sidebar() {
+function Sidebar({ isOpen = false, onClose }) {
   const {
     allThreads,
     setAllThreads,
@@ -55,6 +55,7 @@ function Sidebar() {
     setPrevChats([]);
 
     navigate("/chat");
+    onClose?.();
   };
 
   const changeThread = async (newThreadId) => {
@@ -74,6 +75,7 @@ function Sidebar() {
       setPrevChats(data);
       setNewChat(false);
       setReply(null);
+      onClose?.();
     } catch (error) {
       console.error("Error fetching thread chats:", error);
     }
@@ -113,10 +115,11 @@ function Sidebar() {
     setUser(null);
     setIsAuthenticated(false);
     navigate("/login");
+    onClose?.();
   };
 
   return (
-    <section className={styles.sidebar}>
+    <section className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
       <button className={styles.button} onClick={createNewChat}>
         <img src={blackLogo} alt="gpt-logo" className={styles.logo} />
         <span>

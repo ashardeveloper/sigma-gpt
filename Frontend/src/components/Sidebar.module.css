@@ -3,7 +3,9 @@
   color: #b4b4b4;
 
   height: 100vh;
+  height: 100dvh;
   width: 320px;
+  flex: 0 0 320px;
 
   display: flex;
   flex-direction: column;
@@ -11,7 +13,7 @@
   overflow: hidden;
 }
 
-button {
+.sidebar button {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -31,11 +33,11 @@ button {
   object-fit: cover;
 }
 
-button span {
+.sidebar button span {
   font-size: 20px;
 }
 
-button:hover {
+.sidebar button:hover {
   background-color: rgba(180, 180, 180, 0.05);
 }
 
@@ -57,6 +59,9 @@ button:hover {
   font-size: 14px;
   border: solid 10px transparent;
   position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .history li:hover {
@@ -179,4 +184,31 @@ button:hover {
 
 .history::-webkit-scrollbar-thumb:hover {
   background: #666;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 30;
+    width: min(82vw, 300px);
+    flex-basis: min(82vw, 300px);
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    box-shadow: 12px 0 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .open {
+    transform: translateX(0);
+  }
+
+  .userSection {
+    padding: 0.85rem;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+  }
 }

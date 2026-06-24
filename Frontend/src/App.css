@@ -4,12 +4,60 @@
   font-family: Roboto, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 .app {
   background-color: #212121;
+  min-height: 100vh;
+}
+
+.chatLayout {
   display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.sidebarOverlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow: hidden;
+  }
+
+  .app,
+  .chatLayout {
+    min-height: 100dvh;
+  }
+
+  .sidebarOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: block;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .sidebarOverlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
