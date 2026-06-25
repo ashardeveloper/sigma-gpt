@@ -19,6 +19,8 @@ function Auth({ mode }) {
   } = useContext(MyContext);
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   //const [isLogin, setIsLogin] = useState(true);
   const isLogin = mode === "login";
 
@@ -37,8 +39,8 @@ function Auth({ mode }) {
 
   const handleSubmit = async () => {
     const endpoint = isLogin
-      ? "http://localhost:8080/api/auth/login"
-      : "http://localhost:8080/api/auth/signup";
+      ? `${API_URL}/api/auth/login`
+      : `${API_URL}/api/auth/signup`;
 
     const body = isLogin
       ? {

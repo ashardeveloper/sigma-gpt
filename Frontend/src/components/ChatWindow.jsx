@@ -30,13 +30,15 @@ function ChatWindow({ showMenuButton = false, onMenuClick }) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const getReply = async () => {
     if (!prompt.trim()) return;
     setIsLoading(true);
     setNewChat(false);
     const endpoint = isGuest
-      ? "http://localhost:8080/api/chat/guest"
-      : "http://localhost:8080/api/chat";
+      ? `${API_URL}/api/chat/guest`
+      : `${API_URL}/api/chat`;
     const options = {
       method: "POST",
       headers: {

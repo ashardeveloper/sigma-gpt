@@ -18,6 +18,8 @@ function ChatPage() {
     isGuest,
   } = useContext(MyContext);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     if (isGuest) return;
     const loadThread = async () => {
@@ -27,14 +29,11 @@ function ChatPage() {
       }
 
       try {
-        const response = await fetch(
-          `http://localhost:8080/api/thread/${threadId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const response = await fetch(`${API_URL}/api/thread/${threadId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
 
         const data = await response.json();
 

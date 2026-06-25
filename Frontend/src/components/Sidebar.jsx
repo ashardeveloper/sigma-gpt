@@ -23,9 +23,11 @@ function Sidebar({ isOpen = false, onClose }) {
   } = useContext(MyContext); //store all threads
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const getAllThreads = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/thread", {
+      const response = await fetch(`${API_URL}/api/thread`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -63,14 +65,11 @@ function Sidebar({ isOpen = false, onClose }) {
     setCurrThreadId(newThreadId);
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/thread/${newThreadId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_URL}/api/thread/${newThreadId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       const data = await response.json();
       setPrevChats(data);
       setNewChat(false);
@@ -83,15 +82,12 @@ function Sidebar({ isOpen = false, onClose }) {
 
   const deleteThread = async (threadId) => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/thread/${threadId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_URL}/api/thread/${threadId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       const res = await response.json();
       console.log(res);
 

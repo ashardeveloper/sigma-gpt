@@ -12,6 +12,7 @@ import Signup from "./pages/Signup.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
 
 function App() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [prompt, setPrompt] = useState("");
   const [reply, setReply] = useState(null);
   const [currThreadId, setCurrThreadId] = useState(uuidv1());
@@ -59,7 +60,7 @@ function App() {
       if (!token) return;
 
       try {
-        const response = await fetch("http://localhost:8080/api/auth/me", {
+        const response = await fetch(`${API_URL}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
