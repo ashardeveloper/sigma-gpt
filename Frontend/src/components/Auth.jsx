@@ -94,7 +94,6 @@ function Auth({ mode }) {
       setUser(data.user);
       setIsAuthenticated(true);
       navigate("/chat");
-      console.log("Logged in user:", data.user);
     } catch (error) {
       console.error(error);
       alert("Something went wrong");

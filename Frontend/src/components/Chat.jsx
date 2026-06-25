@@ -51,7 +51,6 @@ function Chat() {
   };
 
   useEffect(() => {
-    console.log("reply:", reply, "isTypingReply:", isTypingReply);
     if (!isTypingReply || !reply) {
       setLatestReply(null);
       return;
