@@ -1,7 +1,7 @@
 import styles from "./ChatWindow.module.css";
 import Chat from "./Chat.jsx";
 import { MyContext } from "../MyContext.jsx";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { ScaleLoader } from "react-spinners";
 import { v1 as uuidv1 } from "uuid";
 import { useNavigate } from "react-router-dom";
@@ -25,15 +25,35 @@ function ChatWindow({ showMenuButton = false, onMenuClick }) {
     setIsTypingReply,
     isGuest,
     setIsGuest,
+    theme,
+    setTheme,
   } = useContext(MyContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState("");
+  const textareaRef = useRef(null);
+  const profileMenuRef = useRef(null);
   const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL;
+  const resizeTextarea = () => {
+    const textarea = textareaRef.current;
+
+    if (!textarea) return;
+
+    textarea.style.height = "auto";
+
+    const maxHeight = 160;
+    const nextHeight = Math.min(textarea.scrollHeight, maxHeight);
+
+    textarea.style.height = `${nextHeight}px`;
+    textarea.style.overflowY =
+      textarea.scrollHeight > maxHeight ? "auto" : "hidden";
+  };
 
   const getReply = async () => {
-    if (!prompt.trim()) return;
+    if (isLoading || !prompt.trim()) return;
+    setError("");
     setIsLoading(true);
     setNewChat(false);
     const endpoint = isGuest
@@ -64,6 +84,11 @@ function ChatWindow({ showMenuButton = false, onMenuClick }) {
       const response = await fetch(endpoint, options);
       const data = await response.json();
 
+      if (!response.ok) {
+        setError(data.error || "Something went wrong. Please try again.");
+        return;
+      }
+
       setIsTypingReply(true);
       setReply(data.reply);
       if (!currThreadId) {
@@ -73,6 +98,7 @@ function ChatWindow({ showMenuButton = false, onMenuClick }) {
       }
     } catch (error) {
       console.error("Error fetching reply:", error);
+      setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -120,6 +146,27 @@ function ChatWindow({ showMenuButton = false, onMenuClick }) {
     setPrompt("");
   }, [reply]);
 
+  useEffect(() => {
+    resizeTextarea();
+  }, [prompt]);
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(e.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   return (
     <div className={styles.chatWindow}>
       <div className={styles.navbar}>
@@ -139,10 +186,28 @@ function ChatWindow({ showMenuButton = false, onMenuClick }) {
           </span>
         </div>
 
-        <div className={styles.userIconDiv} onClick={handleProfileClick}>
-          <span className={styles.userIcon}>
-            <i className="fa-solid fa-user"></i>
-          </span>
+        <div ref={profileMenuRef} className={styles.profileMenu}>
+          <div className={styles.userIconDiv} onClick={handleProfileClick}>
+            <span className={styles.userIcon}>
+              <i className="fa-solid fa-user"></i>
+            </span>
+          </div>
+
+          {isOpen && (
+            <div className={styles.dropDown}>
+              <div
+                className={styles.dropDownItem}
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                <i className="fa-solid fa-circle-half-stroke"></i>
+                {theme === "dark" ? "Light mode" : "Dark mode"}
+              </div>
+
+              <div className={styles.dropDownItem} onClick={logout}>
+                <i className="fa-solid fa-arrow-right-from-bracket"></i> Log out
+              </div>
+            </div>
+          )}
         </div>
       </div>
       {isGuest && (
@@ -160,31 +225,34 @@ function ChatWindow({ showMenuButton = false, onMenuClick }) {
           </button>
         </div>
       )}
-      {isOpen && (
-        <div className={styles.dropDown}>
-          <div className={styles.dropDownItem}>
-            <i className="fa-solid fa-gear"></i> Settings
-          </div>
-          <div className={styles.dropDownItem}>
-            <i className="fa-solid fa-cloud-arrow-up"></i> Upgrade plan
-          </div>
-          <div className={styles.dropDownItem} onClick={logout}>
-            <i className="fa-solid fa-arrow-right-from-bracket"></i> Log out
-          </div>
-        </div>
-      )}
+
       <Chat></Chat>
       <ScaleLoader color="#fff" loading={isLoading}></ScaleLoader>
 
       <div className={styles.chatInput}>
+        {error && <p className={styles.errorText}>{error}</p>}
         <div className={styles.inputBox}>
-          <input
+          <textarea
+            ref={textareaRef}
             placeholder="Ask me anything..."
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            onKeyDown={(e) => (e.key === "Enter" ? getReply() : "")}
+            onChange={(e) => {
+              setPrompt(e.target.value);
+              resizeTextarea();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                getReply();
+              }
+            }}
+            disabled={isLoading}
+            rows={1}
           />
-          <div className={styles.submit} onClick={getReply}>
+          <div
+            className={`${styles.submit} ${isLoading ? styles.disabled : ""}`}
+            onClick={getReply}
+          >
             <i className="fa-solid fa-paper-plane"></i>
           </div>
         </div>

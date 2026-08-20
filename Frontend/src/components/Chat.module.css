@@ -20,33 +20,115 @@
   font-size: 0.9rem;
   overflow-wrap: anywhere;
   word-break: break-word;
+  color: var(--text-primary);
+}
+
+.messageBlock {
+  position: relative;
+  max-width: 100%;
+  padding-bottom: 1.6rem;
+}
+
+.gptDiv .messageBlock {
+  width: 100%;
+}
+
+.userDiv .messageBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.messageCopyBtn {
+  opacity: 0;
+  align-self: flex-start;
+  border: none;
+  background-color: var(--bg-input);
+  color: var(--text-muted);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.userDiv .messageCopyBtn {
+  align-self: flex-end;
+}
+
+.messageBlock:hover .messageCopyBtn {
+  opacity: 1;
+}
+
+.messageCopyBtn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .newChatTitle {
   margin: 0;
   padding: 0 1rem;
+  color: var(--text-primary);
 }
 
 .userMessage {
-  background-color: #323232;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
   padding: 10px 20px;
   border-radius: 14px;
-  margin-left: 15rem;
-  max-width: 500px;
+  max-width: min(500px, 85%);
   width: fit-content;
   overflow-wrap: anywhere;
   text-align: left;
 }
 
+.codeBlock {
+  margin: 1rem 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background-color: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.codeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background-color: #111827;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.codeLanguage {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #e5e7eb;
+}
+
+.codeLanguage i,
+.codeLanguage span {
+  color: #e5e7eb;
+}
+
 pre code.hljs {
   white-space: pre-wrap;
+  background: transparent !important;
+  padding: 0 !important;
 }
 
 pre {
-  border-radius: 14px !important;
+  margin: 0;
+  padding: 1.25rem !important;
+  border-radius: 0 !important;
   max-width: 100%;
   overflow-x: auto;
   text-align: left;
+  background: transparent !important;
 }
 
 .chats::-webkit-scrollbar {
@@ -64,6 +146,47 @@ pre {
 
 .chats::-webkit-scrollbar-thumb:hover {
   background: #666;
+}
+
+:global(:root[data-theme="light"]) .codeBlock {
+  background-color: #ededed;
+  border: 1px solid #d9d9d9;
+}
+
+:global(:root[data-theme="light"]) .codeHeader {
+  background-color: #e6e6e6;
+  border-bottom: 1px solid #d6d6d6;
+}
+
+:global(:root[data-theme="light"]) .codeLanguage,
+:global(:root[data-theme="light"]) .codeLanguage i,
+:global(:root[data-theme="light"]) .codeLanguage span {
+  color: #111827;
+}
+
+:global(:root[data-theme="light"]) .gptDiv :global(.hljs) {
+  background: transparent !important;
+  color: #1f2937 !important;
+}
+
+:global(:root[data-theme="light"]) .gptDiv :global(.hljs-keyword),
+:global(:root[data-theme="light"]) .gptDiv :global(.hljs-selector-tag),
+:global(:root[data-theme="light"]) .gptDiv :global(.hljs-built_in) {
+  color: #0550ae !important;
+}
+
+:global(:root[data-theme="light"]) .gptDiv :global(.hljs-string),
+:global(:root[data-theme="light"]) .gptDiv :global(.hljs-attr) {
+  color: #0a7f42 !important;
+}
+
+:global(:root[data-theme="light"]) .gptDiv :global(.hljs-comment) {
+  color: #6b7280 !important;
+}
+
+:global(:root[data-theme="light"]) .gptDiv :global(.hljs-title),
+:global(:root[data-theme="light"]) .gptDiv :global(.hljs-function) {
+  color: #8250df !important;
 }
 
 @media (max-width: 768px) {
@@ -90,5 +213,9 @@ pre {
   .gptDiv p,
   .gptDiv li {
     line-height: 1.5;
+  }
+
+  .messageCopyBtn {
+    opacity: 1;
   }
 }

@@ -4,11 +4,11 @@
   top: 10px;
   right: 10px;
 
-  background-color: #444;
+  background-color: var(--bg-card);
 
-  color: white;
+  color: var(--text-primary);
 
-  border: none;
+  border: 1px solid var(--border-muted);
 
   border-radius: 6px;
 
@@ -22,5 +22,28 @@
 }
 
 .copyBtn:hover {
-  background-color: #555;
+  background-color: var(--bg-hover);
+}
+
+.headerCopyBtn {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  background-color: transparent;
+  border: none;
+  color: #e5e7eb;
+}
+
+.headerCopyBtn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+:global(:root[data-theme="light"]) .headerCopyBtn {
+  color: #111827;
+}
+
+:global(:root[data-theme="light"]) .headerCopyBtn:hover {
+  background-color: rgba(0, 0, 0, 0.06);
 }

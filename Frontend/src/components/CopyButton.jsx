@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./CopyButton.module.css";
 
-function CopyButton({ code }) {
+function CopyButton({ code, variant = "floating" }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -19,7 +19,10 @@ function CopyButton({ code }) {
   };
 
   return (
-    <button className={styles.copyBtn} onClick={handleCopy}>
+    <button
+      className={`${styles.copyBtn} ${variant === "header" ? styles.headerCopyBtn : ""}`}
+      onClick={handleCopy}
+    >
       {copied ? "Copied!" : "Copy"}
     </button>
   );

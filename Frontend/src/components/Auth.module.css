@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: #212121;
+  background-color: var(--bg-primary);
 
   display: flex;
   justify-content: center;
@@ -14,7 +14,7 @@
   width: 100%;
   max-width: 420px;
 
-  background-color: #2f2f2f;
+  background-color: var(--bg-card);
 
   padding: 2rem;
 
@@ -29,7 +29,7 @@
 
 .heading {
   text-align: center;
-  color: white;
+  color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
@@ -38,17 +38,17 @@
 
   padding: 14px;
 
-  border: none;
+  border: 1px solid var(--border-muted);
   border-radius: 10px;
 
-  background-color: #3b3b3b;
-  color: white;
+  background-color: var(--bg-input);
+  color: var(--text-primary);
 
   font-size: 0.95rem;
 }
 
 .input:focus {
-  outline: 2px solid #339cff;
+  outline: 2px solid var(--accent);
 }
 
 .submitBtn {
@@ -58,7 +58,7 @@
 
   border-radius: 10px;
 
-  background-color: #339cff;
+  background-color: var(--accent);
   color: white;
 
   font-size: 1rem;
@@ -75,7 +75,7 @@
 
 .switchText {
   text-align: center;
-  color: #cfcfcf;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -83,7 +83,7 @@
   border: none;
   background: transparent;
 
-  color: #339cff;
+  color: var(--accent);
   display: block;
   text-align: center;
 
@@ -105,9 +105,9 @@
 
   background: transparent;
 
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-muted);
 
-  color: #b4b4b4;
+  color: var(--text-muted);
 
   border-radius: 10px;
 
@@ -117,8 +117,8 @@
 }
 
 .guestBtn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 @media (max-width: 480px) {

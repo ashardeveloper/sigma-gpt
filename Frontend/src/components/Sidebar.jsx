@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
 import blackLogo from "../assets/blacklogo.png";
 import { MyContext } from "../MyContext.jsx";
@@ -22,6 +22,8 @@ function Sidebar({ isOpen = false, onClose }) {
     setIsAuthenticated,
   } = useContext(MyContext); //store all threads
   const navigate = useNavigate();
+  const [editingThreadId, setEditingThreadId] = useState(null);
+  const [editingTitle, setEditingTitle] = useState("");
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -81,6 +83,12 @@ function Sidebar({ isOpen = false, onClose }) {
   };
 
   const deleteThread = async (threadId) => {
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this chat?",
+    );
+
+    if (!shouldDelete) return;
+
     try {
       const response = await fetch(`${API_URL}/api/thread/${threadId}`, {
         method: "DELETE",
@@ -101,6 +109,56 @@ function Sidebar({ isOpen = false, onClose }) {
       }
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const startRename = (threadId, title) => {
+    setEditingThreadId(threadId);
+    setEditingTitle(title);
+  };
+
+  const cancelRename = () => {
+    setEditingThreadId(null);
+    setEditingTitle("");
+  };
+
+  const saveRename = async (threadId, oldTitle) => {
+    const newTitle = editingTitle.trim();
+
+    if (!newTitle || newTitle === oldTitle) {
+      cancelRename();
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/thread/${threadId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title: newTitle }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "Failed to rename thread");
+        return;
+      }
+
+      setAllThreads((prev) =>
+        prev.map((thread) =>
+          thread.threadId === threadId
+            ? { ...thread, title: data.title }
+            : thread,
+        ),
+      );
+
+      cancelRename();
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong");
     }
   };
 
@@ -132,14 +190,45 @@ function Sidebar({ isOpen = false, onClose }) {
               thread.threadId === currThreadId ? styles.highlighted : ""
             }
           >
-            {thread.title}
-            <i
-              className={`fa-solid fa-trash ${styles["fa-trash"]}`}
-              onClick={(e) => {
-                e.stopPropagation(); //stop event bubbling
-                deleteThread(thread.threadId);
-              }}
-            ></i>
+            {editingThreadId === thread.threadId ? (
+              <input
+                className={styles.renameInput}
+                value={editingTitle}
+                autoFocus
+                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => setEditingTitle(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    saveRename(thread.threadId, thread.title);
+                  }
+
+                  if (e.key === "Escape") {
+                    cancelRename();
+                  }
+                }}
+                onBlur={() => saveRename(thread.threadId, thread.title)}
+              />
+            ) : (
+              <>
+                <span className={styles.threadTitle}>{thread.title}</span>
+
+                <i
+                  className={`fa-solid fa-pen ${styles["fa-rename"]}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    startRename(thread.threadId, thread.title);
+                  }}
+                ></i>
+
+                <i
+                  className={`fa-solid fa-trash ${styles["fa-trash"]}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteThread(thread.threadId);
+                  }}
+                ></i>
+              </>
+            )}
           </li>
         ))}
       </ul>

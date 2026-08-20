@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  color: #ececec;
+  color: var(--text-primary);
   font-family: Roboto, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
@@ -10,6 +10,32 @@ body,
   height: 100%;
 }
 
+:root {
+  --bg-primary: #212121;
+  --bg-secondary: #171717;
+  --bg-card: #323232;
+  --bg-input: rgba(255, 255, 255, 0.05);
+  --bg-hover: rgba(180, 180, 180, 0.1);
+  --text-primary: #ececec;
+  --text-muted: #b4b4b4;
+  --border-muted: rgba(255, 255, 255, 0.12);
+  --accent: #339cff;
+  --danger: #f87171;
+}
+
+:root[data-theme="light"] {
+  --bg-primary: #f7f7f8;
+  --bg-secondary: #ffffff;
+  --bg-card: #e9e9ec;
+  --bg-input: #ffffff;
+  --bg-hover: rgba(0, 0, 0, 0.07);
+  --text-primary: #202123;
+  --text-muted: #6b7280;
+  --border-muted: rgba(0, 0, 0, 0.12);
+  --accent: #2563eb;
+  --danger: #dc2626;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -17,7 +43,7 @@ body {
 }
 
 .app {
-  background-color: #212121;
+  background-color: var(--bg-primary);
   min-height: 100vh;
 }
 

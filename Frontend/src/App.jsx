@@ -29,6 +29,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token"),
   );
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
 
   const providerValues = {
     token,
@@ -53,6 +54,8 @@ function App() {
     setIsTypingReply,
     isGuest,
     setIsGuest,
+    theme,
+    setTheme,
   };
 
   useEffect(() => {
@@ -76,6 +79,11 @@ function App() {
 
     loadUser();
   }, [token]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   return (
     <div className="app">
