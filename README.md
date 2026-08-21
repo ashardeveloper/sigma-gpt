@@ -24,6 +24,28 @@ You can create an account or continue as a guest to try the chat experience.
 - Dark/light theme toggle with saved preference
 - Responsive layout with mobile sidebar drawer
 
+## Screenshots
+
+### Login
+
+![Login](docs/screenshots/login.png)
+
+### Guest-Mode
+
+![Guest-Mode](docs/screenshots/guest.png)
+
+### Markdown & Code Responses
+
+![Markdown & Code Responses](docs/screenshots/markdown.png)
+
+### Rename & Delete Threads
+
+![Rename & Delete Threads](docs/screenshots/rename-delete.png)
+
+### Dark Mode & Profile Controls
+
+![Dark Mode & Profile Controls](docs/screenshots/dark-mode.png)
+
 ## Case Study
 
 ### Problem
