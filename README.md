@@ -1,4 +1,4 @@
-# SigmaGPT
+# SigmaGPT │ AI-Powered ChatGPT style application
 
 SigmaGPT is a ChatGPT-style AI chat application built with React, Express, MongoDB, and the OpenAI API. It supports authenticated chat history, guest conversations, smart thread titles, markdown rendering, syntax-highlighted code blocks, dark/light mode, and a responsive chat interface.
 
